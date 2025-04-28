@@ -146,11 +146,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Developer
 
-Adarsh Singh - Software Developer
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Adarsh Singh - Software Developer (adarshvbspu@gmail.com)
 
 ## Disclaimer
 
