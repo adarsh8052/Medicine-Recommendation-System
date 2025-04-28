@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Health Care Center{% endblock %}
+
+{% block extra_css %}
+<style>
+    .result-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .toggle-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .toggle-button:hover {
+        transform: translateY(-2px);
+    }
+    .modal-header {
+        background-color: #020606;
+        color: white;
+    }
+    .symptom-form {
+        background: #2c3e50;
+        color: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-5">Health Care Center</h1>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="symptom-form">
+                <form action="/predict" method="post">
+                    <div class="form-group mb-4">
+                        <label for="symptoms" class="form-label">Enter Your Symptoms:</label>
+                        <input type="text" class="form-control" id="symptoms" name="symptoms" 
+                               placeholder="Type symptoms such as itching, sleeping, aching etc..">
+                    </div>
+
+                    <button type="button" id="startSpeechRecognition" class="btn btn-primary mb-3">
+                        <i class="bi bi-mic-fill"></i> Start Speech Recognition
+                    </button>
+
+                    <div id="transcription" class="alert alert-info mb-3" style="display: none;"></div>
+
+                    {% if message %}
+                    <div class="alert alert-warning mb-3">{{ message }}</div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-danger btn-lg w-100">Predict</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if predicted_disease %}
+    <div class="mt-5">
+        <h2 class="text-center mb-4">Results</h2>
+        <div class="result-container">
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#diseaseModal" 
+                    style="background:#F39334;">Disease</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#descriptionModal" 
+                    style="background:#268AF3;">Description</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#precautionModal" 
+                    style="background:#F371F9;">Precaution</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#medicationsModal" 
+                    style="background:#F8576F;">Medications</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#workoutsModal" 
+                    style="background:#99F741;">Workouts</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#dietsModal" 
+                    style="background:#E5E23D;">Diets</button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="diseaseModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Predicted Disease</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ predicted_disease }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="descriptionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Description</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ dis_des }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="precautionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Precautions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    {% for precaution in my_precautions %}
+                    <li class="list-group-item">{{ precaution }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="medicationsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Medications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    {% for medication in medications %}
+                    <li class="list-group-item">{{ medication }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="workoutsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Workouts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    {% for workout_item in workout %}
+                    <li class="list-group-item">{{ workout_item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dietsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Diets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    {% for diet in my_diet %}
+                    <li class="list-group-item">{{ diet }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const startSpeechRecognitionButton = document.getElementById('startSpeechRecognition');
+    const transcriptionDiv = document.getElementById('transcription');
+    const symptomsInput = document.getElementById('symptoms');
+
+    startSpeechRecognitionButton.addEventListener('click', startSpeechRecognition);
+
+    function startSpeechRecognition() {
+        // Check for SpeechRecognition API across different browsers
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            alert('Speech recognition is not supported in your browser. Please try Chrome, Edge, or Safari.');
+            return;
+        }
+        
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        startSpeechRecognitionButton.disabled = true;
+        startSpeechRecognitionButton.innerHTML = '<i class="bi bi-mic-fill"></i> Listening...';
+        
+        recognition.onresult = function(event) {
+            try {
+                const result = event.results[0][0].transcript;
+                transcriptionDiv.style.display = 'block';
+                transcriptionDiv.textContent = 'Recognized: ' + result;
+                symptomsInput.value = result;
+                console.log('Speech recognized:', result);
+            } catch (error) {
+                console.error('Error processing speech result:', error);
+                transcriptionDiv.style.display = 'block';
+                transcriptionDiv.textContent = 'Error recognizing speech. Please try again.';
+            }
+        };
+
+        recognition.onend = function() {
+            startSpeechRecognitionButton.disabled = false;
+            startSpeechRecognitionButton.innerHTML = '<i class="bi bi-mic-fill"></i> Start Speech Recognition';
+            console.log('Speech recognition ended');
+        };
+
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            startSpeechRecognitionButton.disabled = false;
+            startSpeechRecognitionButton.innerHTML = '<i class="bi bi-mic-fill"></i> Start Speech Recognition';
+            
+            transcriptionDiv.style.display = 'block';
+            transcriptionDiv.textContent = 'Error: ' + (event.error === 'not-allowed' 
+                ? 'Microphone access denied. Please allow microphone access.' 
+                : 'Speech recognition error. Please try again.');
+        };
+
+        try {
+            recognition.start();
+            console.log('Speech recognition started');
+        } catch (error) {
+            console.error('Error starting speech recognition:', error);
+            startSpeechRecognitionButton.disabled = false;
+            transcriptionDiv.style.display = 'block';
+            transcriptionDiv.textContent = 'Error starting speech recognition. Please try again.';
+        }
+    }
+</script>
+{% endblock %}

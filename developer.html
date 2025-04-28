@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}
+Developer - Health Center
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .developer-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .developer-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .developer-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #f8f9fa;
+    }
+    .developer-section h3 {
+        color: hsl(0, 61%, 41%);
+        margin-bottom: 15px;
+    }
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+    }
+    .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #343640;
+        color: white;
+        text-decoration: none;
+        transition: transform 0.3s, background-color 0.3s;
+    }
+    .social-link:hover {
+        transform: translateY(-3px);
+        background-color: #a72828;
+    }
+    .profile-image {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: block;
+        object-fit: cover;
+        border: 5px solid #a72828;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="developer-container">
+    <div class="developer-header">
+        <h1>About Adarsh Singh</h1>
+        <p class="lead">Aspiring Software Developer</p>
+    </div>
+    
+    <div class="developer-section">
+        <h3>Meet the Developer</h3>
+        <p>Hello, I'm Adarsh Singh, final year student of Computer Science & Engineering at Veer Bahadur Singh Purvanchal University, Jaunpur. I am passionate about harnessing the power of technology to make a positive impact on people's lives. Allow me to share a bit about my journey in the world of artificial intelligence and machine learning.</p>
+    </div>
+    
+    <div class="developer-section">
+        <h3>My Expertise</h3>
+        <p>With a strong academic foundation in Computer Science and Engineering, I have always been deeply fascinated by Artificial Intelligence (AI) and Machine Learning (ML). My passion for these fields has driven me to explore innovative solutions, leading to the successful development of "Smart Health Guidance Hub - Medical Recommendation System" as my final year project.</p>
+    </div>
+    
+    <div class="developer-section">
+        <h3>A Commitment to Excellence</h3>
+        <p>My work is driven by a commitment to excellence and a belief that technology should be accessible and beneficial to everyone. Whether it's developing predictive models, creating intelligent algorithms, or designing user-friendly interfaces, I strive for solutions that are both cutting-edge and user-centric.</p>
+    </div>
+    
+    <div class="developer-section">
+        <h3>Join Me on this Journey</h3>
+        <p>I invite you to explore Health Center and experience firsthand the fusion of AI and healthcare. Together, we can empower individuals with knowledge, promote well-being, and contribute to a brighter and healthier future.</p>
+        
+        <div class="social-links">
+            <a href="https://github.com/adarsh8052" class="social-link" title="GitHub">
+                <i class="bi bi-github"></i>
+            </a>
+            <a href="https://linkedin.com/in/adarsh0808" class="social-link" title="LinkedIn">
+                <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="mailto:adarshsingh639308@gmail.com" class="social-link" title="Email">
+                <i class="bi bi-envelope-fill"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
