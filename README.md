@@ -1,6 +1,6 @@
 # Medicine Recommendation System
 
-A web application that uses machine learning to predict diseases based on symptoms and recommend medications, precautions, workouts, and dietary suggestions.
+A web application that uses machine learning to predict diseases based on symptoms and recommend medications, precautions, dietary and workouts suggestions.
 
 ## Overview
 
